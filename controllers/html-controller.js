@@ -128,7 +128,7 @@ module.exports = function(app) {
 								wantedModel[i].wantedByUser = values[i][1];
 							};
 							data.otherUserItemsWanted = wantedModel;
-							res.render('userprofile', {data: data, mine: mine, user: user});
+							res.render('userprofile2', {data: data, mine: mine, user: user});
 						});
 					});
 				});

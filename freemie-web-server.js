@@ -1,4 +1,5 @@
 var express = require('express');
+var flash = require('express-flash');
 var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -12,6 +13,9 @@ var route = require('./controllers/user-routes');
 var port = process.env.PORT || 3000;
 
 app.use('/assets', express.static(__dirname + '/public'));
+
+// ---- try out ----
+app.use(flash());
 
 app.set('view engine', 'ejs');
 
