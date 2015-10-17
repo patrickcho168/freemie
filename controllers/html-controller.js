@@ -189,7 +189,11 @@ module.exports = function(app) {
 		if(!req.isAuthenticated()) {
 			res.redirect('/signin');
 		} else {
-			res.render('postitem');
+			var user = req.user;
+			if(user !== undefined) {
+				user = user.toJSON();
+			}
+			res.render('postitem2', {user: user});
 		};
 	});
 
@@ -226,7 +230,8 @@ module.exports = function(app) {
 			var item_query = "SELECT p4.total_wants, p3.item_id as wanted_id, p2.username as username, p1.id as item_id, p2.id as user_id, p1.title as title, p1.time_posted as time_posted, p1.giver_id as giver_id, p1.description as description, p1.photo as photo FROM item as p1 LEFT JOIN user as p2 on p2.id = p1.giver_id LEFT JOIN (SELECT * FROM want where user_id = " + user_id + ") as p3 on p3.item_id = p1.id LEFT JOIN (SELECT COUNT(*) as total_wants, item_id FROM want GROUP BY item_id) as p4 on p4.item_id = p1.id where p1.giver_id != " + user_id + " and p1.taker_id is NULL ORDER BY p1.id desc";
 
 			con.query(item_query, function(err, itemrows) {
-				res.render('index', {itemrows: itemrows, title: 'Home', user: user});
+				console.log(itemrows)
+				res.render('index2', {itemrows: itemrows, title: 'Home', user: user});
 			});
 		};
 	});

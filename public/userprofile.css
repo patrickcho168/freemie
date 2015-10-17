@@ -5,8 +5,18 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+@media (max-width: 991px)
+{    
+    .row .col-xs-12 * {margin-bottom:15px;}
+
+}
+
 body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+footer {
+    margin: 50px 0;
 }
 
 @import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
@@ -48,7 +58,7 @@ body {
 
 .col-item .priceleft
 {
-    /*width: 50%;*/
+    width: 60%;
     float: left;
     margin-top: 5px;
 }
@@ -62,7 +72,7 @@ body {
 
 .col-item .priceright
 {
-    /*width: 50%;*/
+    width: 20%;
     float: left;
     margin-top: 5px;
 }
