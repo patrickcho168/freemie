@@ -1,9 +1,11 @@
+var credentials = require('../credentials')
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
    host: 'localhost',  // your host
-   user: 'root', // your database user
-   password: 'pat@ncsv27', // your database password
+   user: credentials.dbusr, // your database user
+   password: credentials.dbpwd, // your database password
    database: 'freemie',
    charset: 'utf8'
 	}
