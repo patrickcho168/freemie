@@ -73,7 +73,7 @@ var signUpPost = function(req, res, next) {
                // sign in the newly registered user
                signInPost(req, res, next);
             });	
-         }
+         };
       });
    };
 };

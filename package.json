@@ -1,0 +1,20 @@
+{
+  "name": "freemie",
+  "version": "1.0.0",
+  "description": "An app for getting free stuff",
+  "author": "Patrick Cho <patcho168@gmail.com>",
+  "contributors": [{
+  "name": "Patrick Cho",
+  "email": "patcho168@gmail.com"
+}],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "freemie-web-server.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "preferGlobal": true,
+  "private": true,
+}

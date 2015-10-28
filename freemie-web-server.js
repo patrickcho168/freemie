@@ -14,8 +14,10 @@ var route = require('./controllers/user-routes');
 
 var port = process.env.PORT || 3000;
 
-app.use('/assets', express.static(__dirname + '/public'));
 
+
+app.use('/assets', express.static(__dirname + '/public'));
+app.set('views', __dirname + '/views');
 // ---- try out ----
 // app.use(flash());
 
@@ -48,10 +50,17 @@ app.get('/signout', route.signOut);
 apiController(app);
 htmlController(app);
 
+// the express app, which allows them to coexist.
+var io = require('socket.io').listen(app.listen(port));
+
+// Require the configuration and the routes files, and pass
+// the app and io as arguments to the returned functions.
+require('./controllers/chat-controller')(app, io);
+
 /********************************/
 
 /********************************/
 // 404 not found
 app.use(route.notFound404);
 
-app.listen(port);
+// Initialize a new socket.io object. It is bound to 
