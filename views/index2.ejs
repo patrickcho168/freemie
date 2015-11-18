@@ -46,7 +46,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/user/<%= user.id %>">My Profile</a>
+                        <a href="/user/<%= user._id %>">My Profile</a>
                     </li>
                     <li>
                         <a href="/postitem">Post Item</a>
@@ -76,10 +76,10 @@
                                     <img src="<%= itemrows[i].photo %>" class="img-responsive" />
                                     <span class="round-tag">
                                         <center>
-                                            <% if (itemrows[i].total_wants === null) { %>
+                                            <% if (itemrows[i].wantedBy.length === null) { %>
                                                 0
                                             <% } else { %>
-                                                <%= itemrows[i].total_wants %>
+                                                <%= itemrows[i].wantedBy.length %>
                                             <% } %>
                                         </center>
                                     </span>
@@ -91,7 +91,7 @@
                                             
                                         </div>
                                         <div class="priceright col-md-6">
-                                            <a class="price-text-color" href="/user/<%= itemrows[i].user_id%>"><%= itemrows[i].username %></a>
+                                            <a class="price-text-color" href="/user/<%= itemrows[i].giver_id._id%>"><%= itemrows[i].giver_id.username %></a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -101,14 +101,14 @@
                                     </div>
                                     <div class="separator clear-left">
                                         <div class="btn-add">
-                                            <% if (itemrows[i].wanted_id === null) { %>
-                                                <form action="/item/<%= itemrows[i].item_id%>/dowant/0" method="post" class="hidden-sm">
+                                            <% if (itemrows[i].wantedByUser === false) { %>
+                                                <form action="/item/<%= itemrows[i]._id%>/dowant/0" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="want" value="want" class="hidden-sm">Want</button>
                                                     </div>
                                                 </form>
                                             <% } else { %>
-                                                <form action="/item/<%= itemrows[i].item_id%>/dounwant/0" method="post" class="hidden-sm">
+                                                <form action="/item/<%= itemrows[i]._id%>/dounwant/0" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
                                                     </div>
@@ -116,7 +116,7 @@
                                             <% }%>
                                         </div>
                                         <p class="btn-details">
-                                            <i class="fa fa-list"></i><a href="/item/<%= itemrows[i].item_id%>" class="hidden-sm">More details</a></p>
+                                            <i class="fa fa-list"></i><a href="/item/<%= itemrows[i]._id%>" class="hidden-sm">More details</a></p>
                                     </div>
                                     <div class="clearfix">
                                     </div>

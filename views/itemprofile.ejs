@@ -4,12 +4,12 @@
 		rel="stylesheet" />
 	</head>
 	<body>
-		Welcome to Freemie <strong><a href='/user/<%= user.id %>' title='userprofile'><%= user.username %></a></strong>
+		Welcome to Freemie <strong><a href='/user/<%= user._id %>' title='userprofile'><%= user.username %></a></strong>
 			<a href="/signout" title="sign out">sign out</a> <br/>
-		<img src=<%=itemrows[0].photo %> alt="item pic" height="90" width="90"> </img> <br/>
-		Name: <%=itemrows[0].title %> <br/>
-		Description: <%=itemrows[0].description %><br/>
-		Giver: <a href="/user/<%= itemrows[0].user_id%>" title="userprofile"><%= itemrows[0].username %></a><br/><br/>
+		<img src=<%=itemrows.photo %> alt="item pic" height="90" width="90"/> <br/>
+		Name: <%=itemrows.title %> <br/>
+		Description: <%=itemrows.description %><br/>
+		Giver: <a href="/user/<%= itemrows.giver_id._id%>" title="userprofile"><%= itemrows.giver_id.username %></a><br/><br/>
 		<p1>Back to </p1> 
 		<a href="/" title="index">home.</a>
 	</body>
