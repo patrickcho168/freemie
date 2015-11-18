@@ -8,28 +8,24 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 var htmlController = require('./controllers/html-controller');
-// var apiController = require('./controllers/api-controller');
 var passport = require('./controllers/user-controller');
 var route = require('./controllers/user-routes');
 var config = require('./config')
 
 var port = process.env.PORT || 8080;
-// var model = require('./models/model-mongodb')(config);
 
 app.disable('etag');
 app.use('/assets', express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
-// ---- try out ----
-// app.use(flash());
 
 app.set('view engine', 'ejs');
 app.set('trust proxy', true);
 
 // -------- Implementing Passport -------------
 
-app.use(cookieParser());
+app.use(cookieParser('freemienvc'));
 app.use(bodyParser());
-app.use(session({secret: 'secret strategic xxzzz code'}));
+app.use(session({secret: 'freemienvc'}));
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -134,7 +134,7 @@
                                         <div class="btn-add">
                                         <% if (mine) { %>
                                             <!-- <i class="fa fa-shopping-cart"></i> -->
-                                            <a href="/item/<%= data.otherUserItemsOwned[i].id%>/edit/" class="hidden-sm">Edit Item</a>
+                                            <a href="/item/<%= data.otherUserItemsOwned[i]._id%>/edit/" class="hidden-sm">Edit Item</a>
                                         <% } else { %>
                                             <% if (!data.otherUserItemsOwned[i].wantedByUser) { %>
                                                 <form action="/item/<%= data.otherUserItemsOwned[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
@@ -152,7 +152,7 @@
                                         <% } %>
                                         </div>
                                         <p class="btn-details">
-                                            <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsOwned[i].id%>" class="hidden-sm">More details</a></p>
+                                            <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsOwned[i]._id%>" class="hidden-sm">More details</a></p>
                                     </div>
                                     <div class="clearfix">
                                     </div>
@@ -195,20 +195,20 @@
                                     <div class="separator clear-left">
                                         <div class="btn-add">
                                         <% if (mine) { %>
-                                            <form action="/item/<%= data.otherUserItemsWanted[i].id%>/dounwant/<%= data.otherUser.id %>" method="post" class="hidden-sm">
+                                            <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
                                                     </div>
                                                 </form>
                                         <% } else { %>
                                             <% if (!data.otherUserItemsWanted[i].wantedByUser) { %>
-                                                <form action="/item/<%= data.otherUserItemsWanted[i].id%>/dowant/<%= data.otherUser.id %>" method="post" class="hidden-sm">
+                                                <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="want" value="want" class="hidden-sm">Want</button>
                                                     </div>
                                                 </form>
                                             <% } else { %>
-                                                <form action="/item/<%= data.otherUserItemsWanted[i].id%>/dounwant/<%= data.otherUser.id %>" method="post" class="hidden-sm">
+                                                <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
                                                     </div>
@@ -217,7 +217,7 @@
                                         <% } %>
                                         </div>
                                         <p class="btn-details">
-                                            <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsWanted[i].id%>" class="hidden-sm">More details</a></p>
+                                            <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsWanted[i]._id%>" class="hidden-sm">More details</a></p>
                                     </div>
                                     <div class="clearfix">
                                     </div>
