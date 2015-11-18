@@ -1,7 +1,6 @@
-// WEB SERVER
+// FREEMIE WEB SERVER
 
 var express = require('express');
-//var flash = require('express-flash');
 var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -29,23 +28,14 @@ app.use(session({secret: 'freemienvc'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// signin
-// GET
+
 app.get('/signin', route.signIn);
-// POST
 app.post('/signin', route.signInPost);
-
-// signup
-// GET
 app.get('/signup', route.signUp);
-// POST
 app.post('/signup', route.signUpPost);
-
-// logout
-// GET
 app.get('/signout', route.signOut);
 
-// apiController(app, model);
+// ------- All other routes -----------
 htmlController(app);
 
 var server = app.listen(config.port, function () {
@@ -55,6 +45,8 @@ var server = app.listen(config.port, function () {
   console.log('App listening at http://%s:%s', host, port);
 });
 
+
+////// FOR CHAT
 // the express app, which allows them to coexist.
 // var io = require('socket.io').listen(app.listen(port, function() {
 // 	var host = server.address().address;
