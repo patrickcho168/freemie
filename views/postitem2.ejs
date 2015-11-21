@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" ng-app="freemie">
 
 <head>
     <meta charset="utf-8">
@@ -28,36 +28,7 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Freemie</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/user/<%= user._id %>">My Profile</a>
-                    </li>
-                    <li>
-                        <a href="/postitem">Post Item</a>
-                    </li>
-                    <li>
-                        <a href="/signout">Logout</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+    <navbar ng-init="userId = '<%= user._id %>'"></navbar>
 
     <div class="container">
 
@@ -81,9 +52,19 @@
         </center>
     </div> <!-- /container -->
 
+    <script src="/assets/js/vendor/angular.js"></script>
+    <script src="/assets/js/vendor/angular-route.js"></script>
+    <script src="/assets/js/vendor/angular-resource.js"></script>
+
+    <script>
+       angular.module('index.data', []).constant('userId', '<%= user._id %>');
+    </script>
+
+    <script src="/assets/js/app.js"></script>
     <script src="/assets/js/vendor/jquery.js"></script>
     <script src="/assets/js/vendor/bootstrap.min.js"></script>
     <script src="/assets/js/app/userprofile.js"></script>
+    <script src="/assets/js/directives/navbar.js"></script>
 </body>
 </html>
             

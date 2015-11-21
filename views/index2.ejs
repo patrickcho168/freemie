@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" ng-app="freemie">
 
 <head>
     <meta charset="utf-8">
@@ -26,121 +26,34 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Freemie</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/user/<%= user._id %>">My Profile</a>
-                    </li>
-                    <li>
-                        <a href="/postitem">Post Item</a>
-                    </li>
-                    <li>
-                        <a href="/signout">Logout</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+    <navbar></navbar>
 
     <div class="well">
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="tab1">
-                <!--<div class="container" style="margin-top:50px;">-->
-                <% for(var i=0; i<itemrows.length; i++) {%>
-                    <% if (i%4 == 0) { %>
-                    <div class="row">
-                    <% } %>
-
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <div class="col-item">
-                                <div class="post-img-content">
-                                    <img src="<%= itemrows[i].photo %>" class="img-responsive" />
-                                    <span class="round-tag">
-                                        <center>
-                                            <% if (itemrows[i].wantedBy.length === null) { %>
-                                                0
-                                            <% } else { %>
-                                                <%= itemrows[i].wantedBy.length %>
-                                            <% } %>
-                                        </center>
-                                    </span>
-                                </div>
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="priceleft col-md-6">
-                                            <h5> <%= itemrows[i].title %></h5>
-                                            
-                                        </div>
-                                        <div class="priceright col-md-6">
-                                            <a class="price-text-color" href="/user/<%= itemrows[i].giver_id._id%>"><%= itemrows[i].giver_id.username %></a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="rating hidden-sm col-md-12">
-                                        <h5 class="price-text-color"><%= itemrows[i].description %></h5>
-                                        </div>
-                                    </div>
-                                    <div class="separator clear-left">
-                                        <div class="btn-add">
-                                            <% if (itemrows[i].wantedByUser === false) { %>
-                                                <form action="/item/<%= itemrows[i]._id%>/dowant/0" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="want" value="want" class="hidden-sm">Want</button>
-                                                    </div>
-                                                </form>
-                                            <% } else { %>
-                                                <form action="/item/<%= itemrows[i]._id%>/dounwant/0" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
-                                                    </div>
-                                                </form>
-                                            <% }%>
-                                        </div>
-                                        <p class="btn-details">
-                                            <i class="fa fa-list"></i><a href="/item/<%= itemrows[i]._id%>" class="hidden-sm">More details</a></p>
-                                    </div>
-                                    <div class="clearfix">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% if ((i+1)%4 == 0 || i == itemrows.length-1) { %>
-                    </div>
-                    <% } %>
-                <% } %>
-            </div>
-            <div class="tab-pane fade in" id="tab2">
-                
-
-            </div>
-            <div class="tab-pane fade in" id="tab3">
-                <h3>This is tab 3</h3>
-            </div>
+            <items></items>
         </div>
     </div>
-    
-    </div>
-</div>
 
-<script src="/assets/js/vendor/jquery.js"></script>
-<script src="/assets/js/vendor/bootstrap.min.js"></script>
-<script src="/assets/js/app/userprofile.js"></script>
+    <script src="/assets/js/vendor/angular.js"></script>
+    <script src="/assets/js/vendor/angular-route.js"></script>
+    <script src="/assets/js/vendor/angular-resource.js"></script>
+
+    <script>
+        angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
+    </script>
+    <script>
+        angular.module('index.data', []).constant('userId', '<%= user._id %>');
+    </script>
+    
+
+    <script src="/assets/js/appIndex.js"></script>
+    <script src="/assets/js/vendor/jquery.js"></script>
+    <script src="/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="/assets/js/app/userprofile.js"></script>
+    <script src="/assets/js/directives/items.js"></script>
+    <script src="/assets/js/directives/navbar.js"></script>
+
+
 
 </body>
 </html>

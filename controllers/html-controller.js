@@ -111,7 +111,7 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.find({ giver_id: {$ne: user._id} }).populate('giver_id').populate('taker_id').exec(function(err, itemrows) {
+		Model.Item.find({ giver_id: {$ne: user._id} }).populate('giver_id').populate('taker_id').lean().exec(function(err, itemrows) {
 			if (err) {
 				console.log('Error in Index Page Item Query: '+err)
 			};

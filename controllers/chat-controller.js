@@ -6,7 +6,7 @@
 
 var gravatar = require('gravatar');
 
-var allModel = require('../models/all-model');
+var allModel = require('../models/mongo-all-model');
 
 // Export a function, so that we can pass 
 // the app and io instances from the app.js file:

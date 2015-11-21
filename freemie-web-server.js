@@ -37,7 +37,7 @@ app.get('/signout', route.signOut);
 
 // ------- All other routes -----------
 htmlController(app);
-
+console.log(config.port)
 var server = app.listen(config.port, function () {
   var host = server.address().address;
   var port = server.address().port;
@@ -46,16 +46,12 @@ var server = app.listen(config.port, function () {
 });
 
 
-////// FOR CHAT
-// the express app, which allows them to coexist.
-// var io = require('socket.io').listen(app.listen(port, function() {
-// 	var host = server.address().address;
-// 	var port = server.address().port;
-// 	console.log('App listening at http://%s:%s', host, port);
-// }));
+// ////// FOR CHAT
+// // the express app, which allows them to coexist.
+// var io = require('socket.io').listen(app.listen(port));
 
-// Require the configuration and the routes files, and pass
-// the app and io as arguments to the returned functions.
+// // Require the configuration and the routes files, and pass
+// // the app and io as arguments to the returned functions.
 // require('./controllers/chat-controller')(app, io);
 
 /********************************/
