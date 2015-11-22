@@ -10,4 +10,7 @@ angular.module('freemie')
   })
   .controller('NavbarController', ['userId', function(userId) {
     this.userId = userId;
+    this.search = function() {
+      
+    }
   }]);
