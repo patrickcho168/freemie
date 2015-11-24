@@ -1,0 +1,63 @@
+<html lang="en" ng-app="freemie">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../assets/images/freemie_icon.png">
+
+    <title>Freemie: <%= user.username %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/assets/css/userprofile.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="/assets/js/vendor/angular.js"></script>
+    <script src="/assets/js/vendor/angular-route.js"></script>
+    <script src="/assets/js/vendor/angular-resource.js"></script>
+
+    <script>
+        angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
+    </script>
+    <script>
+        angular.module('index.data', []).constant('userId', '<%= user._id %>');
+    </script>
+    
+    <script src="/assets/js/vendor/localStorageService.js"></script>
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/vendor/jquery.js"></script>
+    <script src="/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="/assets/js/app/userprofile.js"></script>
+    <script src="/assets/js/directives/items.js"></script>
+    <script src="/assets/js/directives/navbar.js"></script>
+    
+</head>
+
+<body>
+
+    <navbar></navbar>
+
+    <div class="well">
+        <div class="tab-content">
+            <items items="items"></items>
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>
+            
+    

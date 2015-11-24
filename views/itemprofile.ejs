@@ -1,0 +1,39 @@
+<html ng-app="freemie">
+	<head>
+		<link href="assets/css/style.css" type="text/css"
+		rel="stylesheet" />
+		<!-- Bootstrap core CSS -->
+	    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+	    <!-- Custom styles for this template -->
+	    <link href="/assets/css/userprofile.css" rel="stylesheet">
+	</head>
+	<body>
+		<navbar></navbar>
+		
+		<img src=<%=itemrows.photo %> alt="item pic" height="90" width="90"/> <br/>
+		Name: <%=itemrows.title %> <br/>
+		Description: <%=itemrows.description %><br/>
+		Giver: <a href="/user/<%= itemrows.giver_id._id%>" title="userprofile"><%= itemrows.giver_id.username %></a><br/><br/>
+		<p1>Back to </p1> 
+		<a href="/" title="index">home.</a>
+
+
+		<script src="/assets/js/vendor/angular.js"></script>
+		<script src="/assets/js/vendor/angular-route.js"></script>
+		<script src="/assets/js/vendor/angular-resource.js"></script>
+		<script>
+			if(itemrows)
+       		angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
+   		</script>
+		<script>
+		   angular.module('index.data', []).constant('userId', '<%= user._id %>');
+		</script>
+
+		<script src="/assets/js/app.js"></script>
+		<script src="/assets/js/vendor/jquery.js"></script>
+		<script src="/assets/js/vendor/bootstrap.min.js"></script>
+		<script src="/assets/js/app/userprofile.js"></script>
+		<script src="/assets/js/directives/navbar.js"></script>
+	</body>
+</html>

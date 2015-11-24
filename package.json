@@ -1,0 +1,50 @@
+{
+  "name": "freemie",
+  "version": "1.0.0",
+  "description": "An app for getting free stuff",
+  "author": "Patrick Cho <patcho168@gmail.com>",
+  "contributors": [
+    {
+      "name": "Patrick Cho",
+      "email": "patcho168@gmail.com"
+    }
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node freemie-web-server.js",
+    "monitor": "nodemon freemie-web-server.js",
+    "deploy": "gcloud preview app deploy app.yaml",
+    "init-cloudsql": "node models/model-cloudsql.js"
+  },
+  "main": "freemie-web-server.js",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.1",
+    "bookshelf": "^0.8.2",
+    "bootstrap": "^3.3.5",
+    "cookie-parser": "^1.4.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "express-flash": "0.0.2",
+    "express-session": "^1.12.0",
+    "gcloud": "^0.24.1",
+    "gravatar": "^1.3.1",
+    "knex": "^0.8.6",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "mongodb": "^2.0.47",
+    "mongoose": "^4.2.3",
+    "mysql": "^2.9.0",
+    "nodemailer": "^1.8.0",
+    "passport": "^0.3.0",
+    "passport-facebook": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {},
+  "preferGlobal": true,
+  "private": true,
+  "engines": {
+    "node": ">=0.12.7"
+  }
+}
