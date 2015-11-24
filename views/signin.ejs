@@ -11,6 +11,7 @@
     <title>Signin Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -31,9 +32,9 @@
     <div class="container">
         <form class="form-signin" method="post" action="/signin">
             <h2 class="form-signin-heading">Sign in to Freemie!</h2>
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" name="username" id="username"
-           required="true" class="form-control" placeholder="Username" autofocus="">
+            <label for="email" class="sr-only">Email</label>
+            <input type="email" name="email" id="email"
+           required="true" class="form-control" placeholder="Email" autofocus="">
             <label for="password" class="sr-only">Password</label>
             <input type="password" name="password" id="password"
            placeholder="Password" required="true" class="form-control">

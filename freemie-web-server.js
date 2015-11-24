@@ -58,6 +58,5 @@ var server = app.listen(config.port, function () {
 
 /********************************/
 // 404 not found
-app.use(route.notFound404);
 
 // Initialize a new socket.io object. It is bound to 

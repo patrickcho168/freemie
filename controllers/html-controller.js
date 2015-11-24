@@ -4,12 +4,15 @@ var moment = require('moment');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var jsonParser = bodyParser.json();
 
-var Model = require('../models/mongo-all-model');
+// var Model = require('../models/mongo-all-model');
+
+var Firebase = require("firebase");
+var ref = new Firebase("https://blistering-heat-6322.firebaseio.com/");
 
 module.exports = function(app) {
 
 	function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated())
+	if (ref.getAuth())
 		return next();
 	else
 		res.redirect('/signin');
