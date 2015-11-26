@@ -1,5 +1,5 @@
 $(document).ready(function() {
-$(".btn-pref .btn").click(function () {
+$(document).on("click", ".btn-pref .btn", function () {
     $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
     $(".well .tab-pane").removeClass("active"); // instead of this do the below 
     var tab_id = $(this).attr("href")

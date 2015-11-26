@@ -28,10 +28,13 @@
     <script src="/assets/js/vendor/angular-resource.js"></script>
 
     <script>
-        angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
+        angular.module('items.data', []).constant('items', 'a');
     </script>
     <script>
         angular.module('index.data', []).constant('userId', '<%= user._id %>');
+    </script>
+    <script>
+        angular.module('profileitems.data', []).constant('profileitems', <%- JSON.stringify(itemrows) %>);
     </script>
     
     <script src="/assets/js/vendor/localStorageService.js"></script>
@@ -41,6 +44,26 @@
     <script src="/assets/js/app/userprofile.js"></script>
     <script src="/assets/js/directives/items.js"></script>
     <script src="/assets/js/directives/navbar.js"></script>
+    <script>
+    $(function() {
+        $(document).on("click", ".want", function() {
+            var data = $(this).data('itemid');
+            var url = "/item/" + data + "/dowant/0"
+            console.log(url);
+            $.post(url, function(resp) {
+            });
+        });
+    });
+    $(function() {
+        $(document).on("click", ".unwant", function() {
+            var data = $(this).data('itemid');
+            var url = "/item/" + data + "/dounwant/0"
+            console.log(url);
+            $.post(url, function(resp) {
+            });
+        });
+    });
+    </script>
     
 </head>
 
@@ -53,8 +76,6 @@
             <items items="items"></items>
         </div>
     </div>
-
-
 
 
 </body>

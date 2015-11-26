@@ -27,10 +27,15 @@ module.exports = function(app) {
 		var data = {};
 		Model.User.findOne({_id: other_user.id}).lean().exec(function(err, other_user_specs) {
 			data.otherUser = other_user_specs;
-			Model.Item.find({giver_id: other_user.id}).populate('giver_id').lean().exec(function(err, items) {
+			Model.Item.find({giver_id: other_user.id, taker_id: null}).populate('giver_id').lean().exec(function(err, items) {
 				for (var i=0; i<items.length; i++) {
 					var numberOfWants = 0;
 					var wantedByUser = false;
+					if (mine) {
+						items[i].ownedByUser = true;
+					} else {
+						items[i].ownedByUser = false;
+					}
 					for (var j=0; j<items[i].wantedBy.length; j++) {
 						console.log(j);
 						if (items[i].wantedBy[j].userId == user._id) {
@@ -46,9 +51,7 @@ module.exports = function(app) {
 				for (var l=0; l<other_user_specs.want.length; l++) {
 					allItemsWanted.push(other_user_specs.want[l].itemId);
 				}
-				console.log("HELLO123");
-				console.log(allItemsWanted);
-				Model.Item.find({_id: {$in: allItemsWanted}}).populate('giver_id').lean().exec(function(err, other_user_wants) {
+				Model.Item.find({_id: {$in: allItemsWanted}, taker_id: null}).populate('giver_id').lean().exec(function(err, other_user_wants) {
 					if (other_user_wants === undefined) {
 						other_user_wants = [];
 					} else {
@@ -56,11 +59,7 @@ module.exports = function(app) {
 							var numberOfWants = 0;
 							var wantedByUser = false;
 							var ownedByUser = false;
-							console.log(typeof user._id)
-							console.log(typeof other_user_wants[i].giver_id)
-							console.log(other_user_wants[i].giver_id == user._id)
 							if (JSON.stringify(other_user_wants[i].giver_id._id) == JSON.stringify(user._id)) {
-								console.log("HELLO")
 								ownedByUser = true;
 							}
 							for (var j=0; j<other_user_wants[i].wantedBy.length; j++) {
@@ -77,7 +76,6 @@ module.exports = function(app) {
 					// console.log(other_user_wants);
 					data.otherUserItemsWanted = other_user_wants;
 					console.log(data);
-					console.log(other_user_wants);
 					res.render('userprofile2', {data: data, mine: mine, user: user, itemrows: []});
 				});
 			});
@@ -129,12 +127,13 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.find({ giver_id: {$ne: user._id} }).populate('giver_id').populate('taker_id').lean().exec(function(err, itemrows) {
+		Model.Item.find({ giver_id: {$ne: user._id}, taker_id: null}).populate('giver_id').populate('taker_id').lean().exec(function(err, itemrows) {
 			if (err) {
 				console.log('Error in Index Page Item Query: '+err)
 			};
 			for (var i=0; i<itemrows.length; i++) {
 				itemrows[i].wantedByUser = false;
+				itemrows[i].ownedByUser = false;
 				itemrows[i].dounwant = "/item/" + itemrows[i]._id + "/dounwant/0"
 				itemrows[i].dowant = "/item/" + itemrows[i]._id + "/dowant/0"
 				for (var j=0; j< itemrows[i].wantedBy.length; j++) {
@@ -157,12 +156,19 @@ module.exports = function(app) {
 			user = user.toJSON();
 		}
 		Model.Item.findOne({ _id: item_id}).populate('giver_id').populate('wantedBy.userId').exec(function(err, itemrows) {
-			console.log("2");
-			console.log(itemrows);
-			// Model.Item.populate(itemrows, {
-			// 	path: 'partIds.otherIds',
-			// 	model: Model.User
-			// },
+			if (JSON.stringify(user._id) == JSON.stringify(itemrows.giver_id._id)) {
+				itemrows.ownedByUser = true;
+			} else {
+				itemrows.ownedByUser = false;
+			}
+			itemrows.wantedByUser = false;
+			for (var i=0; i<itemrows.wantedBy.length; i++) {
+				console.log(itemrows.wantedBy[i].userId._id);
+				console.log(user._id);
+				if (JSON.stringify(itemrows.wantedBy[i].userId._id) == JSON.stringify(user._id)) {
+					itemrows.wantedByUser = true;
+				}
+			}
 			res.render('itemprofile', {user: user, itemrows: itemrows});
 		})
 	});
@@ -175,7 +181,7 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.findOne({ _id: item_id}, function(err, item) {
+		Model.Item.findOne({ _id: item_id, taker_id: null}, function(err, item) {
 			if (item == null) {
 				if (toid == 0) {
 					res.redirect('/');
@@ -183,7 +189,7 @@ module.exports = function(app) {
 					res.redirect('/user/' + toid);
 				};
 			}
-			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
+			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id, taker_id: null}, function(err, item) {
 				console.log("1");
 				console.log(item);
 				if (item != null) {
@@ -197,12 +203,14 @@ module.exports = function(app) {
 						console.log(err);
 						console.log(doc);
 					});
-					Model.Item.findOneAndUpdate({ _id: item_id }, {$addToSet: {wantedBy: {userId: user._id}}}, function (err, doc){
+					Model.Item.findOneAndUpdate({ _id: item_id, taker_id: null }, {$addToSet: {wantedBy: {userId: user._id}}}, function (err, doc){
 						console.log(err);
 						console.log(doc);
-						if (toid == 0) {
-							res.redirect('/');
-						} else {
+						if (toid == 0) { // remain on page
+							res.json({});
+						} else if (toid == 1) { // go to item page
+							res.redirect('/item/' + item_id);
+						} else { // go to profile page
 							res.redirect('/user/' + toid);
 						};
 					});
@@ -219,15 +227,15 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.findOne({ _id: item_id}, function(err, item) {
+		Model.Item.findOne({ _id: item_id, taker_id: null}, function(err, item) {
 			if (item == null) {
 				if (toid == 0) {
-					res.redirect('/');
+					res.json({});
 				} else {
 					res.redirect('/user/' + toid);
 				};
 			}
-			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
+			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id, taker_id: null}, function(err, item) {
 				console.log("1");
 				console.log(item);
 				if (item == null) {
@@ -241,11 +249,13 @@ module.exports = function(app) {
 						console.log(err);
 						console.log(doc);
 					});
-					Model.Item.update({ _id: item_id }, {$pull: {wantedBy: {userId: user._id}}}, function (err, doc){
+					Model.Item.update({ _id: item_id, taker_id: null }, {$pull: {wantedBy: {userId: user._id}}}, function (err, doc){
 						console.log(err);
 						console.log(doc);
 						if (toid == 0) {
 							res.redirect('/');
+						} else if (toid == 1) { // go to item page
+							res.redirect('/item/' + item_id);
 						} else {
 							res.redirect('/user/' + toid);
 						};
@@ -255,4 +265,29 @@ module.exports = function(app) {
 		});
 	});
 
+	// for giving item
+	// post unwant item
+	app.post('/item/:id/dogive', ensureAuthenticated, function(req, res, next) {
+		var item_id = req.params.id;
+		var user = req.user;
+		if(user !== undefined) {
+			user = user.toJSON();
+		}
+		Model.Item.findOne({ _id: item_id, taker_id: null}, function(err, item) {
+			if (item == null) {
+				res.json({});
+			}
+			Model.Item.update({ _id: item_id, taker_id: null }, {taker_id: user._id}, function (err, doc){
+				console.log(err);
+				console.log(doc);
+				res.redirect('/item/' + item_id);
+			});
+		});
+	});
+
 };
+
+
+
+
+

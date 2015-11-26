@@ -204,19 +204,20 @@ Hover the image
     color: #FFF;
     font-weight: bold;
 }
-form>.btn-holder>button.hidden-sm {
+.btn-holder>button.hidden-sm {
     background: none!important;
     border: none;
     cursor: pointer;
     color:#337ab7;
-    margin-top:10px;
+    width: 100%;
+    margin: 0 auto;
     padding:0px;
 }
-form>.btn-holder>button.hidden-sm:hover{
+.btn-holder>button.hidden-sm:hover{
     text-decoration: underline;
     color:#333;
 }
-form.hidden-sm{
+.hidden-sm{
     margin-bottom:0px;
 }
 .btn-holder{

@@ -24,7 +24,7 @@
 		            <tr>
 		                <td><center><b>No.</b></center></td>
 		                <td><center><b>Wanted By</b></center></td>
-		                <% if (JSON.stringify(itemrows.giver_id._id) == JSON.stringify(user._id)) { %>
+		                <% if (itemrows.ownedByUser) { %>
 		                	<td><center><b>Free me!</b></center></td>
 		                <% } %>
 		            </tr>
@@ -32,11 +32,50 @@
 		            <tr>
 		                <td><center><%= i+1 %></center></td>
 		                <td><center><a href="/user/<%= itemrows.wantedBy[i].userId._id%>"><%= itemrows.wantedBy[i].userId.username %></a></center></td>
+		                <% if (itemrows.ownedByUser) { %>
+		                	<td><center>
+		                		<div class="btn-add">
+				                    <form action="/item/<%= itemrows._id%>/dogive" method="post" class="hidden-sm">
+				                        <div class="btn-holder">
+				                            <button name="give" value="give" class="hidden-sm">Give</button>
+				                        </div>
+				                    </form>
+				                </div>
+		                	</center></td>
+		                <% } %>
 		            </tr>
 		            <% } %>
 		        </table>
+		        <% if (!itemrows.ownedByUser) { %>
+		        	<% if (itemrows.wantedByUser) { %>
+		        		<h5>You are in line to free me!</h5>
+		                <div class="btn-add">
+		                    <form action="/item/<%= itemrows._id%>/dounwant/1" method="post" class="hidden-sm">
+		                        <div class="btn-holder">
+		                            <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
+		                        </div>
+		                    </form>
+		                </div>
+		        	<% } else { %>
+		        		<h5>Join in to free me!</h5>
+		                <div class="btn-add">
+		                    <form action="/item/<%= itemrows._id%>/dowant/1" method="post" class="hidden-sm">
+		                        <div class="btn-holder">
+		                            <button name="want" value="want" class="hidden-sm">Want</button>
+		                        </div>
+		                    </form>
+		                </div>
+		        	<% } %>
+		        <% } %>
 		    <% } else { %>
 		    	<h5>Be the first to free me!</h5>
+                <div class="btn-add">
+                    <form action="/item/<%= itemrows._id%>/dowant/1" method="post" class="hidden-sm">
+                        <div class="btn-holder">
+                            <button name="want" value="want" class="hidden-sm">Want</button>
+                        </div>
+                    </form>
+                </div>
 		    <% } %>
 
 		    <p1>Back to </p1> 
@@ -53,6 +92,9 @@
 		<script>
 		   angular.module('index.data', []).constant('userId', '<%= user._id %>');
 		</script>
+		<script>
+	        angular.module('profileitems.data', []).constant('profileitems', 'a');
+	    </script>
 
 		<script src="/assets/js/vendor/localStorageService.js"></script>
 		<script src="/assets/js/app.js"></script>
