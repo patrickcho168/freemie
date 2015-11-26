@@ -1,6 +1,6 @@
 <html ng-app="freemie">
 	<head>
-		<link href="assets/css/style.css" type="text/css"
+		<link href="/assets/css/style.css" type="text/css"
 		rel="stylesheet" />
 		<!-- Bootstrap core CSS -->
 	    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
@@ -10,26 +10,51 @@
 	</head>
 	<body>
 		<navbar></navbar>
-		
-		<img src=<%=itemrows.photo %> alt="item pic" height="90" width="90"/> <br/>
-		Name: <%=itemrows.title %> <br/>
-		Description: <%=itemrows.description %><br/>
-		Giver: <a href="/user/<%= itemrows.giver_id._id%>" title="userprofile"><%= itemrows.giver_id.username %></a><br/><br/>
-		<p1>Back to </p1> 
-		<a href="/" title="index">home.</a>
+		<div class="container">
+		<center>
+			<img src=<%=itemrows.photo %> alt="item pic" height="200"/> <br/>
+			<h4><%=itemrows.title %> </h4>
+			<h5><%=itemrows.description %></h5>
+			Giver: <a href="/user/<%= itemrows.giver_id._id%>"><%= itemrows.giver_id.username %></a><br/><br/>
+			
 
+			<% if (itemrows.wantedBy.length != 0) {%>
+        
+		        <table class="form-signin table table-striped table-item-want">
+		            <tr>
+		                <td><center><b>No.</b></center></td>
+		                <td><center><b>Wanted By</b></center></td>
+		                <% if (JSON.stringify(itemrows.giver_id._id) == JSON.stringify(user._id)) { %>
+		                	<td><center><b>Free me!</b></center></td>
+		                <% } %>
+		            </tr>
+		            <% for(var i=0; i<itemrows.wantedBy.length; i++) {%>
+		            <tr>
+		                <td><center><%= i+1 %></center></td>
+		                <td><center><a href="/user/<%= itemrows.wantedBy[i].userId._id%>"><%= itemrows.wantedBy[i].userId.username %></a></center></td>
+		            </tr>
+		            <% } %>
+		        </table>
+		    <% } else { %>
+		    	<h5>Be the first to free me!</h5>
+		    <% } %>
+
+		    <p1>Back to </p1> 
+			<a href="/" title="index">home.</a>
+		</center>
+		</div>
 
 		<script src="/assets/js/vendor/angular.js"></script>
 		<script src="/assets/js/vendor/angular-route.js"></script>
 		<script src="/assets/js/vendor/angular-resource.js"></script>
 		<script>
-			if(itemrows)
        		angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
    		</script>
 		<script>
 		   angular.module('index.data', []).constant('userId', '<%= user._id %>');
 		</script>
 
+		<script src="/assets/js/vendor/localStorageService.js"></script>
 		<script src="/assets/js/app.js"></script>
 		<script src="/assets/js/vendor/jquery.js"></script>
 		<script src="/assets/js/vendor/bootstrap.min.js"></script>

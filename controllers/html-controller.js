@@ -27,7 +27,7 @@ module.exports = function(app) {
 		var data = {};
 		Model.User.findOne({_id: other_user.id}).lean().exec(function(err, other_user_specs) {
 			data.otherUser = other_user_specs;
-			Model.Item.find({giver_id: other_user.id}).lean().exec(function(err, items) {
+			Model.Item.find({giver_id: other_user.id}).populate('giver_id').lean().exec(function(err, items) {
 				for (var i=0; i<items.length; i++) {
 					var numberOfWants = 0;
 					var wantedByUser = false;
@@ -46,20 +46,38 @@ module.exports = function(app) {
 				for (var l=0; l<other_user_specs.want.length; l++) {
 					allItemsWanted.push(other_user_specs.want[l].itemId);
 				}
-				Model.Item.find({_id: {$in: allItemsWanted}}).lean().exec(function(err, other_user_wants) {
-					for (var i=0; i<other_user_wants.length; i++) {
-						var numberOfWants = 0;
-						var wantedByUser = false;
-						for (var j=0; j<other_user_wants[i].wantedBy.length; j++) {
-							if (other_user_wants[i].wantedBy[j].userId == user._id) {
-								wantedByUser = true;
+				console.log("HELLO123");
+				console.log(allItemsWanted);
+				Model.Item.find({_id: {$in: allItemsWanted}}).populate('giver_id').lean().exec(function(err, other_user_wants) {
+					if (other_user_wants === undefined) {
+						other_user_wants = [];
+					} else {
+						for (var i=0; i<other_user_wants.length; i++) {
+							var numberOfWants = 0;
+							var wantedByUser = false;
+							var ownedByUser = false;
+							console.log(typeof user._id)
+							console.log(typeof other_user_wants[i].giver_id)
+							console.log(other_user_wants[i].giver_id == user._id)
+							if (JSON.stringify(other_user_wants[i].giver_id._id) == JSON.stringify(user._id)) {
+								console.log("HELLO")
+								ownedByUser = true;
 							}
-							numberOfWants += 1;
+							for (var j=0; j<other_user_wants[i].wantedBy.length; j++) {
+								if (other_user_wants[i].wantedBy[j].userId == user._id) {
+									wantedByUser = true;
+								}
+								numberOfWants += 1;
+							}
+							other_user_wants[i].numberofWants = numberOfWants
+							other_user_wants[i].wantedByUser = wantedByUser;
+							other_user_wants[i].ownedByUser = ownedByUser;
 						}
-						other_user_wants[i].numberofWants = numberOfWants
-						other_user_wants[i].wantedByUser = true;
 					}
+					// console.log(other_user_wants);
 					data.otherUserItemsWanted = other_user_wants;
+					console.log(data);
+					console.log(other_user_wants);
 					res.render('userprofile2', {data: data, mine: mine, user: user, itemrows: []});
 				});
 			});
@@ -117,6 +135,8 @@ module.exports = function(app) {
 			};
 			for (var i=0; i<itemrows.length; i++) {
 				itemrows[i].wantedByUser = false;
+				itemrows[i].dounwant = "/item/" + itemrows[i]._id + "/dounwant/0"
+				itemrows[i].dowant = "/item/" + itemrows[i]._id + "/dowant/0"
 				for (var j=0; j< itemrows[i].wantedBy.length; j++) {
 					console.log(user._id)
 					if (itemrows[i].wantedBy[j].userId == user._id) {
@@ -124,6 +144,7 @@ module.exports = function(app) {
 					}
 				}
 			}
+			console.log(itemrows);
 			res.render('index2', {itemrows: itemrows, title: 'Home', user: user});
 		});
 	});
@@ -135,9 +156,13 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.findOne({ _id: item_id}).populate('giver_id').exec(function(err, itemrows) {
+		Model.Item.findOne({ _id: item_id}).populate('giver_id').populate('wantedBy.userId').exec(function(err, itemrows) {
 			console.log("2");
 			console.log(itemrows);
+			// Model.Item.populate(itemrows, {
+			// 	path: 'partIds.otherIds',
+			// 	model: Model.User
+			// },
 			res.render('itemprofile', {user: user, itemrows: itemrows});
 		})
 	});
@@ -150,30 +175,39 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-		Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
-			console.log("1");
-			console.log(item);
-			if (item != null) {
+		Model.Item.findOne({ _id: item_id}, function(err, item) {
+			if (item == null) {
 				if (toid == 0) {
 					res.redirect('/');
 				} else {
 					res.redirect('/user/' + toid);
 				};
-			} else {
-				Model.User.update({ _id: user._id }, {$addToSet: {want: {itemId: item_id}}}, function (err, doc){
-					console.log(err);
-					console.log(doc);
-				});
-				Model.Item.findOneAndUpdate({ _id: item_id }, {$addToSet: {wantedBy: {userId: user._id}}}, function (err, doc){
-					console.log(err);
-					console.log(doc);
+			}
+			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
+				console.log("1");
+				console.log(item);
+				if (item != null) {
 					if (toid == 0) {
 						res.redirect('/');
 					} else {
 						res.redirect('/user/' + toid);
 					};
-				});
-			}
+				} else {
+					Model.User.update({ _id: user._id }, {$addToSet: {want: {itemId: item_id}}}, function (err, doc){
+						console.log(err);
+						console.log(doc);
+					});
+					Model.Item.findOneAndUpdate({ _id: item_id }, {$addToSet: {wantedBy: {userId: user._id}}}, function (err, doc){
+						console.log(err);
+						console.log(doc);
+						if (toid == 0) {
+							res.redirect('/');
+						} else {
+							res.redirect('/user/' + toid);
+						};
+					});
+				}
+			});
 		});
 	});
 
@@ -185,31 +219,39 @@ module.exports = function(app) {
 		if(user !== undefined) {
 			user = user.toJSON();
 		}
-
-		Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
-			console.log("1");
-			console.log(item);
+		Model.Item.findOne({ _id: item_id}, function(err, item) {
 			if (item == null) {
 				if (toid == 0) {
 					res.redirect('/');
 				} else {
 					res.redirect('/user/' + toid);
 				};
-			} else {
-				Model.User.update({ _id: user._id }, {$pull: {want: {itemId: item_id}}}, function (err, doc){
-					console.log(err);
-					console.log(doc);
-				});
-				Model.Item.update({ _id: item_id }, {$pull: {wantedBy: {userId: user._id}}}, function (err, doc){
-					console.log(err);
-					console.log(doc);
+			}
+			Model.Item.findOne({ "wantedBy.userId": user._id, _id: item_id}, function(err, item) {
+				console.log("1");
+				console.log(item);
+				if (item == null) {
 					if (toid == 0) {
 						res.redirect('/');
 					} else {
 						res.redirect('/user/' + toid);
 					};
-				});
-			}
+				} else {
+					Model.User.update({ _id: user._id }, {$pull: {want: {itemId: item_id}}}, function (err, doc){
+						console.log(err);
+						console.log(doc);
+					});
+					Model.Item.update({ _id: item_id }, {$pull: {wantedBy: {userId: user._id}}}, function (err, doc){
+						console.log(err);
+						console.log(doc);
+						if (toid == 0) {
+							res.redirect('/');
+						} else {
+							res.redirect('/user/' + toid);
+						};
+					});
+				}
+			});
 		});
 	});
 

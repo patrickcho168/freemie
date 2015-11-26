@@ -91,7 +91,11 @@
                                             
                                         </div>
                                         <div class="priceright col-md-6">
-                                            <h5 class="price-text-color">FREE</h5>
+                                            <% if (mine) { %>
+                                                <h5 class="price-text-color"> GIVE</h5>
+                                            <% } else { %>
+                                                <h5 class="price-text-color"> FREE</h5>
+                                            <% } %>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -100,26 +104,30 @@
                                         </div>
                                     </div>
                                     <div class="separator clear-left">
-                                        <div class="btn-add">
                                         <% if (mine) { %>
                                             <!-- <i class="fa fa-shopping-cart"></i> -->
-                                            <a href="/item/<%= data.otherUserItemsOwned[i]._id%>/edit/" class="hidden-sm">Edit Item</a>
+                                            <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsOwned[i]._id%>/edit/" class="hidden-sm">Edit Item</a>
+                                            </p>
                                         <% } else { %>
                                             <% if (!data.otherUserItemsOwned[i].wantedByUser) { %>
-                                                <form action="/item/<%= data.otherUserItemsOwned[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="want" value="want" class="hidden-sm">Want</button>
-                                                    </div>
-                                                </form>
+                                                <div class="btn-add">
+                                                    <form action="/item/<%= data.otherUserItemsOwned[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
+                                                        <div class="btn-holder">
+                                                            <button name="want" value="want" class="hidden-sm">Want</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             <% } else { %>
-                                                <form action="/item/<%= data.otherUserItemsOwned[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
-                                                    </div>
-                                                </form>
+                                                <div class="btn-add">
+                                                    <form action="/item/<%= data.otherUserItemsOwned[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
+                                                        <div class="btn-holder">
+                                                            <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             <% }%>
                                         <% } %>
-                                        </div>
                                         <p class="btn-details">
                                             <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsOwned[i]._id%>" class="hidden-sm">More details</a></p>
                                     </div>
@@ -153,7 +161,7 @@
                                             
                                         </div>
                                         <div class="priceright col-md-6">
-                                            <h5 class="price-text-color">FREE</h5>
+                                            <a class="price-text-color" href="/user/<%=data.otherUserItemsWanted[i].giver_id._id%>"><%= data.otherUserItemsWanted[i].giver_id.username %></a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -162,29 +170,39 @@
                                         </div>
                                     </div>
                                     <div class="separator clear-left">
-                                        <div class="btn-add">
+                                        
                                         <% if (mine) { %>
-                                            <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
-                                                    </div>
-                                                </form>
-                                        <% } else { %>
-                                            <% if (!data.otherUserItemsWanted[i].wantedByUser) { %>
-                                                <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
-                                                    <div class="btn-holder">
-                                                        <button name="want" value="want" class="hidden-sm">Want</button>
-                                                    </div>
-                                                </form>
-                                            <% } else { %>
+                                            <div class="btn-add">
                                                 <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
                                                     <div class="btn-holder">
                                                         <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
                                                     </div>
                                                 </form>
+                                            </div>
+                                        <% } else { %>
+                                            <% if (data.otherUserItemsWanted[i].ownedByUser) { %>
+                                                <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsWanted[i]._id %>/edit/" class="hidden-sm">Edit Item</a>
+                                                </p>
+                                            <% } else if (!data.otherUserItemsWanted[i].wantedByUser) { %>
+                                                <div class="btn-add">   
+                                                    <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dowant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
+                                                        <div class="btn-holder">
+                                                            <button name="want" value="want" class="hidden-sm">Want</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            <% } else { %>
+                                                <div class="btn-add">
+                                                    <form action="/item/<%= data.otherUserItemsWanted[i]._id%>/dounwant/<%= data.otherUser._id %>" method="post" class="hidden-sm">
+                                                        <div class="btn-holder">
+                                                            <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             <% }%>
                                         <% } %>
-                                        </div>
+                                        
                                         <p class="btn-details">
                                             <i class="fa fa-list"></i><a href="/item/<%= data.otherUserItemsWanted[i]._id%>" class="hidden-sm">More details</a></p>
                                     </div>
@@ -213,8 +231,8 @@
 <script src="/assets/js/vendor/angular-resource.js"></script>
 <script src="/assets/js/vendor/localStorageService.js"></script>
 <script>
-        angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
-    </script>
+    angular.module('items.data', []).constant('items', <%- JSON.stringify(itemrows) %>);
+</script>
 <script>
    angular.module('index.data', []).constant('userId', '<%= user._id %>');
 </script>

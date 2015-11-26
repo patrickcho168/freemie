@@ -168,13 +168,13 @@ angularLocalStorage.provider('localStorageService', function() {
     // Example use: localStorageService.get('library'); // returns 'angular'
     var getFromLocalStorage = function (key) {
 
-      if (!browserSupportsLocalStorage || self.storageType === 'cookie') {
-        if (!browserSupportsLocalStorage) {
-          $rootScope.$broadcast('LocalStorageModule.notification.warning','LOCAL_STORAGE_NOT_SUPPORTED');
-        }
+      // if (!browserSupportsLocalStorage || self.storageType === 'cookie') {
+      //   if (!browserSupportsLocalStorage) {
+      //     $rootScope.$broadcast('LocalStorageModule.notification.warning','LOCAL_STORAGE_NOT_SUPPORTED');
+      //   }
 
-        return getFromCookies(key);
-      }
+      //   return getFromCookies(key);
+      // }
 
       var item = webStorage ? webStorage.getItem(deriveQualifiedKey(key)) : null;
       // angular.toJson will convert null to 'null', so a proper conversion is needed

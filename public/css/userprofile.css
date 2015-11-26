@@ -308,3 +308,7 @@ form.hidden-sm{
     -webkit-border-radius:0 !important;
 }
 
+.table-item-want {
+    max-width: 600px;
+}
+

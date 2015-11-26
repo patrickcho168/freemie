@@ -31,12 +31,12 @@
                         </div>
                         <div class="separator clear-left">
                             <div class="btn-add">
-                                <form action="/item/{{item._id}}/dowant/0" method="post" class="hidden-sm" ng-if="item.wantedByUser === false">
+                                <form action="{{item.dowant}}" method="post" class="hidden-sm" ng-if="item.wantedByUser === false">
                                     <div class="btn-holder">
                                         <button name="want" value="want" class="hidden-sm">Want</button>
                                     </div>
                                 </form>
-                                <form action="/item/{{item._id}}/dounwant/0" method="post" class="hidden-sm" ng-if="item.wantedByUser === true">
+                                <form action="{{item.dounwant}}" method="post" class="hidden-sm" ng-if="item.wantedByUser === true">
                                     <div class="btn-holder">
                                         <button name="unwant" value="unwant" class="hidden-sm">Unwant</button>
                                     </div>
